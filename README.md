@@ -49,7 +49,7 @@ ORDER BY
 LIMIT 5; 
 ```
 2. What is the total sales made and their distribution across each documented year (2014-2017)?
-```
+``` SQL
 SELECT
     DATE_PART('year', occurred_at) AS Year,
     SUM(total_amt_usd) AS Total_Sales
@@ -62,7 +62,7 @@ ORDER BY
 ```
 3. What is the total monthly revenue per year from 2014-2017?
 
-```
+``` SQL
 SELECT
     DATE_PART('Year', occurred_at) AS Year,
     DATE_PART('month', occurred_at) AS Month,
@@ -74,7 +74,7 @@ ORDER BY
      Year;
 ```
 4. What revenue is generated per company?
-```
+``` SQL
 SELECT 
     a.Name, 
     SUM(o.total_amt_usd) AS Total_Sales
@@ -90,7 +90,7 @@ ORDER BY
     Total_Sales DESC;
 ```
 5. What is the performance of sales representatives who have both the highest number of orders and the highest revenue generated?
-```
+``` SQL
 SELECT 
 s.name As sales_reps, 
 COUNT(o.total) as Total_Orders, 
@@ -106,7 +106,7 @@ ORDER BY
 Total_Revenue DESC
 ```
 6. What region(s) that have generated the highest total revenue?
-```
+``` SQL
 SELECT 
 region.Name,   
         	sum(standard_amt_usd) as Total_Standard_Amt,

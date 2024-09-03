@@ -1,2 +1,2 @@
 # DataPioneers
-## Description of thr steps and exploratory analysis insight from Posey database tables to the manager. 
+## Description of the steps and insight from exploratory analysis of Posey database tables to the manager. 

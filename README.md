@@ -1,4 +1,4 @@
-# Exploratiry Data Analysis of Posey Data by DataPioneers Team (Group 3). 
+# Exploratiry Data Analysis of Posey Data Tables by DataPioneers Team (Group 3). 
 # Table Of Contents. 
 - Overview
 - Data

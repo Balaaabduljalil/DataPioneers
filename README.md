@@ -46,4 +46,8 @@ GROUP BY
     Name
 ORDER BY 
     Poster_Count DESC, Gloss_Count DESC, Standard_Count DESC
-LIMIT 5; ```
+LIMIT 5;
+
+2. What is the total sales made and their distribution across each documented year?
+
+

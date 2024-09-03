@@ -30,3 +30,20 @@ These four tables are found in the database of the Parch and Posey data company.
 PostgreSQL was used to generate queries that aid analytical and explorative analysis of the database.
 
 # Business Questions: 
+1. Who are the top 5 customers with more than 30 orders, including their product preferences?
+
+``` SQL
+
+SELECT 
+    Name,
+    SUM(CASE WHEN poster_qty > 30 THEN 1 ELSE 0 END) AS Poster_Count,
+    SUM(CASE WHEN gloss_qty > 30 THEN 1 ELSE 0 END) AS Gloss_Count,
+    SUM(CASE WHEN standard_qty > 30 THEN 1 ELSE 0 END) AS Standard_Count
+FROM orders AS o
+JOIN accounts AS a 
+ON o.account_id = a.id
+GROUP BY 
+    Name
+ORDER BY 
+    Poster_Count DESC, Gloss_Count DESC, Standard_Count DESC
+LIMIT 5; ```

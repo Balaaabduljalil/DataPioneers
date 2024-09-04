@@ -40,7 +40,27 @@ SELECT
     	ROUND(AVG(total_amt_usd), 2) average_order_value_usd
 FROM 
     orders; 
-```
+````
+
+What is the total quantity by product type?
+```` SQL
+SELECT 
+    SUM(standard_qty) total_standard_qty,
+    SUM(gloss_qty) total_gloss_qty,
+    SUM(poster_qty) total_poster_qty
+FROM 
+    orders;
+````
+
+What is the average quantity by product type?
+```` SQL
+SELECT 
+    ROUND(AVG(standard_qty), 2) avg_standard_qty,
+    ROUND(AVG(gloss_qty), 2) avg_gloss_qty,
+    ROUND(AVG(poster_qty), 2) avg_poster_qty
+FROM 
+    orders;
+````
 
 What is the total sales by product type?
 ```` SQL
@@ -138,6 +158,20 @@ LEFT JOIN accounts a
 LEFT JOIN sales_reps s
     ON a.sales_rep_id = s.id
 GROUP BY sales_rep_name
+ORDER BY total_sales DESC
+LIMIT 5;
+````
+
+Top 5 Customers
+```` SQL
+SELECT 
+    a.name account_name, 
+    SUM(o.total_amt_usd) total_sales, 
+	SUM(o.total) total_qty
+FROM orders o
+LEFT JOIN accounts a
+	ON o.account_id = a.id
+GROUP BY account_name
 ORDER BY total_sales DESC
 LIMIT 5;
 ````

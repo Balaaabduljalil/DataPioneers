@@ -18,7 +18,7 @@ The purpose of this analysis is to gain valuable insights from the Company’s d
 
 # Data: 
 
-The data underwent a comprehensive cleaning process prior to analysis. Every blank and duplication was removed. PostgreSQL was used for exploratory data analysis with the goal of minimizing revenue loss and optimizing revenue and sales. The CSV formatted results of the SQL queries were extracted, redirected, and entered into the visualization tool.
+***** The data underwent a comprehensive cleaning process prior to analysis. Every blank and duplication was removed. PostgreSQL was used for exploratory data analysis with the goal of minimizing revenue loss and optimizing revenue and sales. The CSV formatted results of the SQL queries were extracted, redirected, and entered into the visualization tool. *****
 
 These four tables are found in the database of the Parch and Posey data company.
 - Accounts
@@ -146,7 +146,7 @@ ORDER BY total_sales ASC
 LIMIT 1;
 ````
 
-TOP 5 Sales rep by total sales value and quantity sold?
+Top 5 Sales rep by total sales value and quantity sold?
 ```` SQL
 SELECT 
     s.name sales_rep_name, 
@@ -214,18 +214,18 @@ GROUP BY region_name
 ORDER BY total_sales_usd DESC;
 ````
 
-4. What revenue is generated per company?
-``` SQL
+Channels on Sales
+````SQL
 SELECT 
-    a.name, 
-    SUM(o.total_amt_usd) total_Sales
-FROM orders AS o
-JOIN accounts AS a 
-   ON o.account_id = a.id
-GROUP BY a.name
-ORDER BY total_Sales DESC;
-```
-
+    w.channel, 
+    SUM(o.total_amt_usd) total_sales,
+    SUM(o.total) total_qty
+FROM web_events w
+LEFT JOIN orders o
+     ON w.account_id = o.account_id
+GROUP BY w.channel
+ORDER BY total_sales DESC;
+````
 
 # Insights: 
 Check out the presentation slides for the exploratory data analysis and recommendations. Thank

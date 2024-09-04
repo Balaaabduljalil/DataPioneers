@@ -125,6 +125,7 @@ ORDER BY
    region.id
 ```
 # Insights: 
+Check out the presentation slides for the exploratory data analysis and recommendations. Thank
 
 
 

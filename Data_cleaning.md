@@ -49,3 +49,17 @@ ALTER COLUMN gloss_amt_usd TYPE NUMERIC USING gloss_amt_usd::NUMERIC,
 ALTER COLUMN poster_amt_usd TYPE NUMERIC USING poster_amt_usd::NUMERIC,
 ALTER COLUMN total_amt_usd TYPE NUMERIC USING total_amt_usd::NUMERIC;
 ````
+Replacing null value with 0 in orders tables
+````SQL
+UPDATE orders
+SET standard_qty = 0
+WHERE standard_qty IS NULL;
+
+UPDATE orders
+SET gloss_qty = 0
+WHERE gloss_qty IS NULL;
+
+UPDATE orders
+SET poster_qty = 0
+WHERE poster_qty IS NULL;
+````

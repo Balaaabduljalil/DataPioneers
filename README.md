@@ -24,106 +24,175 @@ These four tables are found in the database of the Parch and Posey data company.
 - Accounts
 - Regions
 - Orders
-- Sales_Reps
-- Web_event
+- Sales_reps
+- Web_events
 # Tool Used: 
 PostgreSQL was used to generate queries that aid analytical and explorative analysis of the database.
 
 # Notable Business Questions: 
-1. Who are the top 5 customers with more than 30 orders, including their product preferences?
 
+What is the total, average quantity of product ordered, the total value and average?
 ``` SQL
-
 SELECT 
-    Name,
-    SUM(CASE WHEN poster_qty > 30 THEN 1 ELSE 0 END) AS Poster_Count,
-    SUM(CASE WHEN gloss_qty > 30 THEN 1 ELSE 0 END) AS Gloss_Count,
-    SUM(CASE WHEN standard_qty > 30 THEN 1 ELSE 0 END) AS Standard_Count
-FROM orders AS o
-JOIN accounts AS a 
-ON o.account_id = a.id
-GROUP BY 
-    Name
-ORDER BY 
-    Poster_Count DESC, Gloss_Count DESC, Standard_Count DESC
-LIMIT 5; 
+	SUM(total) total_qty_ordered,
+	ROUND(AVG(total), 2) average_qty_ordered,
+	Sum(total_amt_usd) total_order_value_usd,
+    	ROUND(AVG(total_amt_usd), 2) average_order_value_usd
+FROM 
+    orders; 
 ```
-2. What is the total sales made and their distribution across each documented year (2014-2017)?
-``` SQL
-SELECT
-    DATE_PART('year', occurred_at) AS Year,
-    SUM(total_amt_usd) AS Total_Sales
-FROM
-    orders
-GROUP BY 
-   Year
-ORDER BY 
-    Year;
-```
-3. What is the total monthly revenue per year from 2014-2017?
 
-``` SQL
+What is the total sales by product type?
+```` SQL
+SELECT 
+    SUM(standard_amt_usd) standard_sales,
+    SUM(gloss_amt_usd) gloss_sales,
+    SUM(poster_amt_usd) poster_sales
+FROM 
+    orders;
+````
+
+What is the average sales by product type?
+```` SQL
+SELECT 
+    ROUND(AVG(standard_amt_usd), 2) standard_sales,
+    ROUND(AVG(gloss_amt_usd), 2) gloss_sales,
+    ROUND(AVG(poster_amt_usd), 2) poster_sales
+FROM 
+    orders;
+````
+
+What is the total and average order value and quantity by year?
+````SQL
+SELECT 
+    EXTRACT(year FROM occurred_at) as Year,
+    SUM(total_amt_usd) total_order_value_usd,
+    ROUND(AVG(total_amt_usd), 2) avg_order_value_usd,
+    SUM(total) total_qty,
+    ROUND(AVG(total), 2) avg_qty
+FROM 
+    orders
+GROUP BY year
+ORDER BY total_order_value_usd DESC;
+````
+
+What is the total and average order value and quantity by month?
+````SQL
+SELECT 
+    EXTRACT(month FROM occurred_at) as month,
+    SUM(total_amt_usd) total_order_value_usd,
+    ROUND(AVG(total_amt_usd), 2) avg_order_value_usd,
+    SUM(total) total_qty,
+    ROUND(AVG(total), 2) avg_qty
+FROM 
+    orders
+GROUP BY month
+ORDER BY total_order_value_usd DESC;
+````
+
+What is the total and average order value and quantity by quarter?
+````SQL
+SELECT 
+    EXTRACT(quarter FROM occurred_at) as quarter,
+    SUM(total_amt_usd) total_order_value_usd,
+    ROUND(AVG(total_amt_usd), 2) avg_order_value_usd,
+    SUM(total) total_qty,
+    ROUND(AVG(total), 2) avg_qty
+FROM 
+    orders
+GROUP BY quarter
+ORDER BY total_order_value_usd DESC;
+````
+
+When was the highest sales recorded?
+```` SQL
 SELECT
-    DATE_PART('Year', occurred_at) AS Year,
-    DATE_PART('month', occurred_at) AS Month,
- SUM(total_amt_usd) AS Total_Sales
+    DATE(occurred_at) AS sale_date, 
+    SUM(total_amt_usd) AS total_sales 
 FROM orders
-GROUP BY
-    Year, Month
+GROUP BY sale_date
+ORDER BY total_sales DESC
+LIMIT 1;
+````
+
+When was the lowest sales recorded?
+```` SQL
+SELECT 
+    DATE(occurred_at) sale_date, 
+    SUM(total_amt_usd) total_sales 
+FROM orders
+GROUP BY sale_date
+ORDER BY total_sales ASC
+LIMIT 1;
+````
+
+TOP 5 Sales rep by total sales value and quantity sold?
+```` SQL
+SELECT 
+    s.name sales_rep_name, 
+    SUM(o.total_amt_usd) total_sales,
+    SUM(o.total) total_qty
+FROM orders o
+LEFT JOIN accounts a
+    ON o.account_id = a.id
+LEFT JOIN sales_reps s
+    ON a.sales_rep_id = s.id
+GROUP BY sales_rep_name
+ORDER BY total_sales DESC
+LIMIT 5;
+````
+
+Account Distribution by Region
+````SQL
+SELECT 
+    r.name AS region_name, 
+    COUNT(a.id) AS number_of_accounts 
+FROM 
+    accounts a
+LEFT JOIN sales_reps s
+    ON a.sales_rep_id = s.id
+LEFT JOIN region r
+    ON s.region_id = r.id
+GROUP BY 
+    region_name
 ORDER BY 
-     Year;
-```
+    number_of_accounts DESC;
+````
+
+Sales and quantity by Region
+````SQL
+SELECT 
+    r.name region_name,
+    COUNT(o.id) total_orders,
+    SUM(o.total_amt_usd) total_sales_usd,
+    ROUND(AVG(o.total_amt_usd), 2) avg_sales_usd,
+    SUM(o.total) total_qty,
+    ROUND(AVG(o.total), 2) avg_qty
+FROM 
+    orders o
+LEFT JOIN accounts a
+    ON o.account_id = a.id
+LEFT JOIN sales_reps s
+    ON a.sales_rep_id = s.id
+LEFT JOIN region r
+    ON s.region_id = r.id
+GROUP BY region_name
+ORDER BY total_sales_usd DESC;
+````
+
 4. What revenue is generated per company?
 ``` SQL
 SELECT 
-    a.Name, 
-    SUM(o.total_amt_usd) AS Total_Sales
-FROM 
-    orders AS o
-JOIN 
-    accounts AS a 
-ON 
-    o.account_id = a.id
-GROUP BY 
-    a.Name
-ORDER BY 
-    Total_Sales DESC;
+    a.name, 
+    SUM(o.total_amt_usd) total_Sales
+FROM orders AS o
+JOIN accounts AS a 
+   ON o.account_id = a.id
+GROUP BY a.name
+ORDER BY total_Sales DESC;
 ```
-5. What is the performance of sales representatives who have both the highest number of orders and the highest revenue generated?
-``` SQL
-SELECT 
-s.name As sales_reps, 
-COUNT(o.total) as Total_Orders, 
-	SUM(total_amt_usd) as Total_Revenue
-FROM sales_reps as s
-JOIN accounts as a
-ON s.id = a.sales_rep_id
-JOIN orders as o
-ON a.id = o.account_id
-GROUP BY
-s.Name
-ORDER BY 
-Total_Revenue DESC
-```
-6. What region(s) that have generated the highest total revenue?
-``` SQL
-SELECT 
-region.Name,   
-        	sum(standard_amt_usd) as Total_Standard_Amt,
-	sum(gloss_amt_usd) as Total_Gloss_Amt,
-	sum(poster_amt_usd) as Poster_Amt
-FROM sales_reps
-JOIN region
-ON sales_reps.region_id = region.id
-JOIN accounts
-ON accounts.sales_rep_id = sales_reps.id
-JOIN orders
-ON orders.account_id = accounts.id
-GROUP BY 
-    region.id, region.Name
-ORDER BY
-   region.id
-```
+
+
 # Insights: 
 Check out the presentation slides for the exploratory data analysis and recommendations. Thank
 

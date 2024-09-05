@@ -193,7 +193,7 @@ LIMIT 1;
 ### Output:
 sale_date | total_sales  
 ------------ | ------------ 
-"2016-12-26"	| 297243.23 
+2016-12-26	| 297243.23 
 
 When was the lowest sales recorded?
 ```` SQL
@@ -208,7 +208,7 @@ LIMIT 1;
 ### Output:
 sale_date | total_sales  
 ------------ | ------------ 
-"2015-02-03"	| 486.55
+2015-02-03	| 486.55
 
 Top 5 Sales rep by total sales value and quantity sold?
 ```` SQL
@@ -228,13 +228,11 @@ LIMIT 5;
 ### Output:
 sales_rep_name | total_sales | total_qty 
 ------------ | ------------  | ------------ 
-"Earlie Schleusner" | 70280814.08 | 11163520
-"Tia Amato" | 64684198.40 | 9768832 
-"Vernita Plump" | 59789627.52 | 9629888
-"Georgianna Chisholm" | 56719623.68 | 8588672
-"Arica Stoltzfus" | 51862613.76 | 7814592 
-
-
+Earlie Schleusner | 70280814.08 | 11163520
+Tia Amato | 64684198.40 | 9768832 
+Vernita Plump | 59789627.52 | 9629888
+Georgianna Chisholm | 56719623.68 | 8588672
+Arica Stoltzfus | 51862613.76 | 7814592 
 
 
 Top 5 Customers
@@ -250,12 +248,21 @@ GROUP BY account_name
 ORDER BY total_sales DESC
 LIMIT 5;
 ````
+### Output:
+account_name | total_sales | total_qty 
+------------ | ------------  | ------------ 
+EOG Resources | 3062986.40 | 451280
+Mosaic | 2764948.72 | 393968 
+IBM | 2614555.84 | 380048
+General Dynamics | 2405558.32 | 349840
+Republic Services | 2350889.12 | 326664 
+
 
 Account Distribution by Region
 ````SQL
 SELECT 
     r.name AS region_name, 
-    COUNT(a.id) AS number_of_accounts 
+    COUNT(s.name) AS number_of_accounts 
 FROM 
     accounts a
 LEFT JOIN sales_reps s
@@ -267,6 +274,15 @@ GROUP BY
 ORDER BY 
     number_of_accounts DESC;
 ````
+### Output:
+region_name | number_of_accounts  
+------------ | ------------ 
+Northeast	| 54272
+West	| 51712
+Southeast	| 49152
+Midwest	| 24576
+
+
 
 Sales and quantity by Region
 ````SQL
@@ -288,6 +304,15 @@ LEFT JOIN region r
 GROUP BY region_name
 ORDER BY total_sales_usd DESC;
 ````
+### Output:
+region_name | total_orders  | total_sales_usd  | avg_sales_usd  | total_qty  | avg_qty  
+------------ | ------------  | ------------ | ------------ | ------------ | ------------
+Northeast	| 1206784 | 3965135544.32 | 3285.70	| 629953536	| 524.23
+West	| 1036288	| 3306750464.00	| 3190.96	| 529922560	| 512.38
+Southeast	| 836608	| 3033662955.52	| 3626.15	| 474896384	| 569.74
+Midwest	| 459264	| 1542905093.12	| 3359.52	| 247219200	| 538.29
+
+
 
 Channels on Sales
 ````SQL
@@ -301,6 +326,15 @@ LEFT JOIN orders o
 GROUP BY w.channel
 ORDER BY total_sales DESC;
 ````
+### Output:
+channel | total_sales | total_qty 
+------------ | ------------ | ------------
+direct	| 5117598218.08 | 819264080
+facebook	| 824245255.84 | 133458040
+organic	| 816402614.24 | 133041680
+adwords	| 782214845.12 | 127131016
+twitter	| 405333525.52 | 66116208
+banner	| 384627232.40 | 63330392
 
 # Insights: 
 Check out the presentation slides for the exploratory data analysis and recommendations. Thank

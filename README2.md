@@ -1,37 +1,34 @@
 # Exploratory Data Analysis of Posey Data Tables by DataPioneers Team (Group 3). 
-# Table Of Contents. 
+### Table Of Contents. 
 - Overview
 - Aim of the Analysis
 - Data
+- Data cleaning
 - Tools Used
 - Notable Business Questions
 - Insights
 - Recommendation 
 
-# Overview: 
+## Overview: 
 
 Paper goods are the primary focus of the American business Parch & Posey. It employs fifty sales reps in all, who work in four US regions. Standard paper, glossy paper, and poster paper are the three types of paper that the company sells. Finding significant trends that can help with client retention, product promotion, sales growth, and well-informed company decisions is the goal of this analysis.
 
-# Aim Of The Analysis: 
+## Aim Of The Analysis: 
 
 The purpose of this analysis is to gain valuable insights from the Company’s data and improve its sales performance.
 
-# Data: 
+## Data: 
+The CSV files were loaded into the Posey database using Bash scripting. The database contains five tables: regions, orders, sales_reps, web_events, and accounts.
+  
+## Data Cleaning:
+The data type for each column in the tables was modified to the appropriate type. Null values in the standard_qty, gloss_qty, and poster_qty columns of the orders table were replaced with 0. SQL query for data_cleaning can be found [here](Data_cleaning.md) No duplicate records were found in the database.
 
-***** The data underwent a comprehensive cleaning process prior to analysis. Every blank and duplication was removed. PostgreSQL was used for exploratory data analysis with the goal of minimizing revenue loss and optimizing revenue and sales. The CSV formatted results of the SQL queries were extracted, redirected, and entered into the visualization tool. *****
-
-These four tables are found in the database of the Parch and Posey data company.
-- Accounts
-- Regions
-- Orders
-- Sales_reps
-- Web_events
 # Tool Used: 
-PostgreSQL was used to generate queries that aid analytical and explorative analysis of the database.
+PostgreSQL was used for explorative analysis of the database.
 
 # Notable Business Questions: 
 
-What is the total, average quantity of product ordered, the total value and average?
+What is the total, average quantity of product ordered, the total value, and average?
 ``` SQL
 SELECT 
 	SUM(total) total_qty_ordered,
@@ -41,6 +38,11 @@ SELECT
 FROM 
     orders; 
 ````
+### Output:
+total_qty_ordered | average_qty_ordered | total_order_value_usd | average_order_value_usd|
+------------ | ------------ | ------------| ------------
+3675765	| 533.34 | 23141511.83 |	3348.02
+
 
 What is the total quantity by product type?
 ```` SQL
@@ -51,6 +53,11 @@ SELECT
 FROM 
     orders;
 ````
+### Output:
+total_standard_qty | total_gloss_qty | total_poster_qty 
+------------ | ------------ | ------------
+1938346	| 1938346 | 723646
+
 
 What is the average quantity by product type?
 ```` SQL
@@ -61,26 +68,40 @@ SELECT
 FROM 
     orders;
 ````
+### Output:
+avg_standard_qty | avg_gloss_qty | avg_poster_qty 
+------------ | ------------ | ------------
+280.43	| 146.67 | 104.69
+
 
 What is the total sales by product type?
 ```` SQL
 SELECT 
-    SUM(standard_amt_usd) standard_sales,
-    SUM(gloss_amt_usd) gloss_sales,
-    SUM(poster_amt_usd) poster_sales
+    SUM(standard_amt_usd) total_standard_sales,
+    SUM(gloss_amt_usd) total_gloss_sales,
+    SUM(poster_amt_usd) total_poster_sales
 FROM 
     orders;
 ````
+### Output:
+total_standard_sales | total_gloss_sales | total_poster_sales 
+------------ | ------------ | ------------
+9672346.54	| 7593159.77 | 5876005.52
+
 
 What is the average sales by product type?
 ```` SQL
 SELECT 
-    ROUND(AVG(standard_amt_usd), 2) standard_sales,
-    ROUND(AVG(gloss_amt_usd), 2) gloss_sales,
-    ROUND(AVG(poster_amt_usd), 2) poster_sales
+    ROUND(AVG(standard_amt_usd), 2) avg_standard_sales,
+    ROUND(AVG(gloss_amt_usd), 2) avg_gloss_sales,
+    ROUND(AVG(poster_amt_usd), 2) avg_poster_sales
 FROM 
     orders;
 ````
+### Output:
+avg_standard_sales | avg_gloss_sales | avg_poster_sales 
+------------ | ------------ | ------------
+1399.36	| 1098.55 | 850.12
 
 What is the total and average order value and quantity by year?
 ````SQL
@@ -95,6 +116,16 @@ FROM
 GROUP BY year
 ORDER BY total_order_value_usd DESC;
 ````
+### Output:
+Year | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
+------------ | ------------  | ------------ | ------------ | ------------
+2016 | 12864917.92 | 3424.25 | 2041600 | 544.72
+2015 | 5752004.94 | 3334.50 | 912972 | 530.18
+2014 | 4069106.54 | 3115.70 | 650896 | 501.46
+2013 | 377331.00 | 3811.42 | 58310 | 588.99
+2017 | 78151.43 | 3126.06 | 11987 | 588.99
+
+
 
 What is the total and average order value and quantity by month?
 ````SQL
@@ -109,6 +140,22 @@ FROM
 GROUP BY month
 ORDER BY total_order_value_usd DESC;
 ````
+### Output:
+month | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
+------------ | ------------  | ------------ | ------------ | ------------
+12 | 3129411.98 | 3548.09 | 486592 | 552.95
+10 | 2427505.97 | 3596.31 | 386576 | 573.55
+11 | 2390033.75 | 3352.08 | 377768 | 532.07
+9 | 2017216.88| 3350.86 | 323082 | 537.57
+7 | 1978731.15 | 3465.38 | 310849 | 546.31
+8 | 1918107.22 | 3180.94 | 306756 | 508.72
+6 | 1871118.52 | 3550.51 | 301487 | 572.08
+3 | 1659987.88 | 3443.96 | 260453 | 542.61
+4 | 1562037.74 | 3309.40 | 248033 | 527.73
+5 | 1537082.23 | 2967.34 | 246816 | 478.33
+1 | 1337661.87 | 2920.66 | 216438 | 474.64
+2 | 1312616.64 | 3209.33 | 210915 | 519.50
+
 
 What is the total and average order value and quantity by quarter?
 ````SQL
@@ -123,6 +170,15 @@ FROM
 GROUP BY quarter
 ORDER BY total_order_value_usd DESC;
 ````
+### Output:
+quarter | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
+------------ | ------------  | ------------ | ------------ | ------------
+4 | 7946951.70 | 3500.86 | 1250936 | 552.53
+3 | 5914055.25 | 3329.99 | 940687 | 530.56
+2 | 4970238.49 | 3276.36 | 796336 | 526.33
+1 | 4310266.39 | 3195.16 | 687806 | 512.52
+
+
 
 When was the highest sales recorded?
 ```` SQL
@@ -134,6 +190,10 @@ GROUP BY sale_date
 ORDER BY total_sales DESC
 LIMIT 1;
 ````
+### Output:
+sale_date | total_sales  
+------------ | ------------ 
+"2016-12-26"	| 297243.23 
 
 When was the lowest sales recorded?
 ```` SQL
@@ -145,6 +205,10 @@ GROUP BY sale_date
 ORDER BY total_sales ASC
 LIMIT 1;
 ````
+### Output:
+sale_date | total_sales  
+------------ | ------------ 
+"2015-02-03"	| 486.55
 
 Top 5 Sales rep by total sales value and quantity sold?
 ```` SQL
@@ -161,6 +225,17 @@ GROUP BY sales_rep_name
 ORDER BY total_sales DESC
 LIMIT 5;
 ````
+### Output:
+sales_rep_name | total_sales | total_qty 
+------------ | ------------  | ------------ 
+"Earlie Schleusner" | 70280814.08 | 11163520
+"Tia Amato" | 64684198.40 | 9768832 
+"Vernita Plump" | 59789627.52 | 9629888
+"Georgianna Chisholm" | 56719623.68 | 8588672
+"Arica Stoltzfus" | 51862613.76 | 7814592 
+
+
+
 
 Top 5 Customers
 ```` SQL

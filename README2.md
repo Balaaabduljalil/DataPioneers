@@ -348,6 +348,7 @@ banner	| 384627232.40 | 63330392
 - Earlie Schleusner leads in total sales and quantity sold, exhibiting a great ability to drive revenue and manage big volumes of orders. The remaining top sales representatives likewise demonstrate significant sales statistics, with a noticeable difference in both total sales and quantity.
 - EOG Resources leads in overall sales and amount purchased, showing that it is the most valuable customer. The remaining top customers have substantial sales and purchase volumes, emphasizing critical accounts that contribute significantly to overall revenue and order quantities.
 - The Northeast region has the highest number of accounts, Midwest has the fewest accounts indicating prospects for regional expansion or targeted sales efforts.
+- The Northeast region leads in total sales and quantity, indicating it is the highest revenue-generating region with a substantial number of orders. The Southeast region has the highest average sales per order, suggesting a stronger per-order performance. The Midwest has the lowest total sales and orders, which may indicate a need for increased focus or strategies to boost performance in that region.
 - The direct channel generates the highest sales and quantity, significantly outperforming other channels. This indicates that marketing through the direct channel is highly effective in driving revenue and underscores its importance in the overall sales strategy.
 
 

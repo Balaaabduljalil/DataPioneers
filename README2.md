@@ -11,11 +11,11 @@
 
 ## Overview: 
 
-Paper goods are the primary focus of the American business Parch & Posey. It employs fifty sales reps in all, who work in four US regions. Standard paper, glossy paper, and poster paper are the three types of paper that the company sells. Finding significant trends that can help with client retention, product promotion, sales growth, and well-informed company decisions is the goal of this analysis.
+Paper goods are the primary focus of the American business Parch & Posey. It employs fifty sales reps in all four US regions. Standard paper, glossy paper, and poster paper are the three types of paper that the company sells. This analysis aims to find significant trends that can help with client retention, product promotion, sales growth, and well-informed company decisions.
 
 ## Aim Of The Analysis: 
 
-The purpose of this analysis is to gain valuable insights from the Company’s data and improve its sales performance.
+This analysis aims to gain valuable insights from the Company’s data and improve its sales performance.
 
 ## Data: 
 The CSV files were loaded into the Posey database using Bash scripting. The database contains five tables: regions, orders, sales_reps, web_events, and accounts.
@@ -28,7 +28,7 @@ PostgreSQL was used for explorative analysis of the database.
 
 # Notable Business Questions: 
 
-What is the total, average quantity of product ordered, the total value, and average?
+#### What is the total, average quantity of product ordered, the total value, and average?
 ``` SQL
 SELECT 
 	SUM(total) total_qty_ordered,
@@ -38,13 +38,14 @@ SELECT
 FROM 
     orders; 
 ````
-### Output:
+##### Output:
 total_qty_ordered | average_qty_ordered | total_order_value_usd | average_order_value_usd|
 ------------ | ------------ | ------------| ------------
 3675765	| 533.34 | 23141511.83 |	3348.02
 
 
-What is the total quantity by product type?
+
+#### What is the total quantity by product type?
 ```` SQL
 SELECT 
     SUM(standard_qty) total_standard_qty,
@@ -53,13 +54,13 @@ SELECT
 FROM 
     orders;
 ````
-### Output:
+##### Output:
 total_standard_qty | total_gloss_qty | total_poster_qty 
 ------------ | ------------ | ------------
-1938346	| 1938346 | 723646
+1938346	| 1013773 | 723646
 
 
-What is the average quantity by product type?
+#### What is the average quantity by product type?
 ```` SQL
 SELECT 
     ROUND(AVG(standard_qty), 2) avg_standard_qty,
@@ -68,13 +69,13 @@ SELECT
 FROM 
     orders;
 ````
-### Output:
+##### Output:
 avg_standard_qty | avg_gloss_qty | avg_poster_qty 
 ------------ | ------------ | ------------
 280.43	| 146.67 | 104.69
 
 
-What is the total sales by product type?
+#### What is the total sales by product type?
 ```` SQL
 SELECT 
     SUM(standard_amt_usd) total_standard_sales,
@@ -83,13 +84,13 @@ SELECT
 FROM 
     orders;
 ````
-### Output:
+##### Output:
 total_standard_sales | total_gloss_sales | total_poster_sales 
 ------------ | ------------ | ------------
 9672346.54	| 7593159.77 | 5876005.52
 
 
-What is the average sales by product type?
+#### What is the average sales by product type?
 ```` SQL
 SELECT 
     ROUND(AVG(standard_amt_usd), 2) avg_standard_sales,
@@ -98,12 +99,12 @@ SELECT
 FROM 
     orders;
 ````
-### Output:
+##### Output:
 avg_standard_sales | avg_gloss_sales | avg_poster_sales 
 ------------ | ------------ | ------------
 1399.36	| 1098.55 | 850.12
 
-What is the total and average order value and quantity by year?
+#### What is the total and average order value and quantity by year?
 ````SQL
 SELECT 
     EXTRACT(year FROM occurred_at) as Year,
@@ -116,7 +117,7 @@ FROM
 GROUP BY year
 ORDER BY total_order_value_usd DESC;
 ````
-### Output:
+##### Output:
 Year | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
 ------------ | ------------  | ------------ | ------------ | ------------
 2016 | 12864917.92 | 3424.25 | 2041600 | 544.72
@@ -127,7 +128,7 @@ Year | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
 
 
 
-What is the total and average order value and quantity by month?
+#### What is the total and average order value and quantity by month?
 ````SQL
 SELECT 
     EXTRACT(month FROM occurred_at) as month,
@@ -140,7 +141,7 @@ FROM
 GROUP BY month
 ORDER BY total_order_value_usd DESC;
 ````
-### Output:
+##### Output:
 month | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
 ------------ | ------------  | ------------ | ------------ | ------------
 12 | 3129411.98 | 3548.09 | 486592 | 552.95
@@ -157,7 +158,7 @@ month | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
 2 | 1312616.64 | 3209.33 | 210915 | 519.50
 
 
-What is the total and average order value and quantity by quarter?
+#### What is the total and average order value and quantity by quarter?
 ````SQL
 SELECT 
     EXTRACT(quarter FROM occurred_at) as quarter,
@@ -170,7 +171,7 @@ FROM
 GROUP BY quarter
 ORDER BY total_order_value_usd DESC;
 ````
-### Output:
+##### Output:
 quarter | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
 ------------ | ------------  | ------------ | ------------ | ------------
 4 | 7946951.70 | 3500.86 | 1250936 | 552.53
@@ -180,7 +181,7 @@ quarter | total_order_value_usd | avg_order_value_usd | total_qty | avg_qty
 
 
 
-When was the highest sales recorded?
+#### When was the highest sales recorded?
 ```` SQL
 SELECT
     DATE(occurred_at) AS sale_date, 
@@ -190,12 +191,12 @@ GROUP BY sale_date
 ORDER BY total_sales DESC
 LIMIT 1;
 ````
-### Output:
+##### Output:
 sale_date | total_sales  
 ------------ | ------------ 
 2016-12-26	| 297243.23 
 
-When was the lowest sales recorded?
+#### When was the lowest sales recorded?
 ```` SQL
 SELECT 
     DATE(occurred_at) sale_date, 
@@ -205,12 +206,12 @@ GROUP BY sale_date
 ORDER BY total_sales ASC
 LIMIT 1;
 ````
-### Output:
+##### Output:
 sale_date | total_sales  
 ------------ | ------------ 
 2015-02-03	| 486.55
 
-Top 5 Sales rep by total sales value and quantity sold?
+#### Top 5 Sales rep by total sales value and quantity sold?
 ```` SQL
 SELECT 
     s.name sales_rep_name, 
@@ -225,7 +226,7 @@ GROUP BY sales_rep_name
 ORDER BY total_sales DESC
 LIMIT 5;
 ````
-### Output:
+##### Output:
 sales_rep_name | total_sales | total_qty 
 ------------ | ------------  | ------------ 
 Earlie Schleusner | 70280814.08 | 11163520
@@ -235,7 +236,7 @@ Georgianna Chisholm | 56719623.68 | 8588672
 Arica Stoltzfus | 51862613.76 | 7814592 
 
 
-Top 5 Customers
+#### Top 5 Customers
 ```` SQL
 SELECT 
     a.name account_name, 
@@ -248,7 +249,7 @@ GROUP BY account_name
 ORDER BY total_sales DESC
 LIMIT 5;
 ````
-### Output:
+##### Output:
 account_name | total_sales | total_qty 
 ------------ | ------------  | ------------ 
 EOG Resources | 3062986.40 | 451280
@@ -258,7 +259,7 @@ General Dynamics | 2405558.32 | 349840
 Republic Services | 2350889.12 | 326664 
 
 
-Account Distribution by Region
+#### Account Distribution by Region
 ````SQL
 SELECT 
     r.name AS region_name, 
@@ -274,7 +275,7 @@ GROUP BY
 ORDER BY 
     number_of_accounts DESC;
 ````
-### Output:
+##### Output:
 region_name | number_of_accounts  
 ------------ | ------------ 
 Northeast	| 54272
@@ -284,7 +285,7 @@ Midwest	| 24576
 
 
 
-Sales and quantity by Region
+#### Sales and quantity by Region
 ````SQL
 SELECT 
     r.name region_name,
@@ -304,7 +305,7 @@ LEFT JOIN region r
 GROUP BY region_name
 ORDER BY total_sales_usd DESC;
 ````
-### Output:
+##### Output:
 region_name | total_orders  | total_sales_usd  | avg_sales_usd  | total_qty  | avg_qty  
 ------------ | ------------  | ------------ | ------------ | ------------ | ------------
 Northeast	| 1206784 | 3965135544.32 | 3285.70	| 629953536	| 524.23
@@ -314,7 +315,7 @@ Midwest	| 459264	| 1542905093.12	| 3359.52	| 247219200	| 538.29
 
 
 
-Channels on Sales
+#### Channels on Sales
 ````SQL
 SELECT 
     w.channel, 
@@ -326,7 +327,7 @@ LEFT JOIN orders o
 GROUP BY w.channel
 ORDER BY total_sales DESC;
 ````
-### Output:
+##### Output:
 channel | total_sales | total_qty 
 ------------ | ------------ | ------------
 direct	| 5117598218.08 | 819264080
@@ -337,7 +338,18 @@ twitter	| 405333525.52 | 66116208
 banner	| 384627232.40 | 63330392
 
 # Insights: 
-Check out the presentation slides for the exploratory data analysis and recommendations. Thank
+- The company has sold a total of 3,675,765 units, making $23,141,511.83 in revenue. The average order size is 533.34 units, and the average transaction value is $3,348.02. These data indicate robust demand from large-volume buyers, which presents an opportunity to refine marketing efforts and ensure efficient inventory management.
+- The Standard product type has the highest total quantity, followed by Gloss and Poster. This shows that Standard products are the most frequently ordered, which may indicate higher demand or preference for these items.
+- Standard products generate the highest revenue, while posters contribute the least in revenue generation.
+- 2016 had the highest total order value and quantity, indicating that it was the year of peak sales and order volume. While the average order value was highest in 2013, lower overall sales indicate fewer but more expensive transactions. The decrease in sales in 2017 compared to previous years may require additional inquiry into potential explanations.
+- December had the largest total order value in USD and a large number of orders, signifying strong end-of-year results. October also has strong sales and the greatest average order value, indicating that buyers are eager to spend more money this month. In contrast, months such as May and January, with lower total order values and average amounts, may benefit from specific promotions or campaigns to increase sales.
+- Q4 has the highest overall order value and quantity, indicating excellent end-of-year sales performance, while Q1 has the lowest values in both categories. This pattern indicates that the company has a sales high in the fourth quarter, potentially owing to seasonal demand or end-of-year promotions, and may require tactics to improve sales in the first quarter.
+- The highest sales were recorded on December 26, 2016, with a total of $297,243.23. While the lowest sales were recorded on February 3, 2015, with a total of $486.55. This indicates that the company experienced peak sales activity during holiday season shopping or post-holiday promotions.
+- Earlie Schleusner leads in total sales and quantity sold, exhibiting a great ability to drive revenue and manage big volumes of orders. The remaining top sales representatives likewise demonstrate significant sales statistics, with a noticeable difference in both total sales and quantity.
+- EOG Resources leads in overall sales and amount purchased, showing that it is the most valuable customer. The remaining top customers have substantial sales and purchase volumes, emphasizing critical accounts that contribute significantly to overall revenue and order quantities.
+- The Northeast region has the highest number of accounts, Midwest has the fewest accounts indicating prospects for regional expansion or targeted sales efforts.
+- The direct channel generates the highest sales and quantity, significantly outperforming other channels. This indicates that marketing through the direct channel is highly effective in driving revenue and underscores its importance in the overall sales strategy.
+
 
 
 

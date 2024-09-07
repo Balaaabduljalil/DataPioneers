@@ -239,7 +239,7 @@ Arica Stoltzfus | 51862613.76 | 7814592
 #### Top 5 Customers
 ```` SQL
 SELECT 
-    a.name account_name, 
+    a.name accout_name, 
     SUM(o.total_amt_usd) total_sales, 
 	SUM(o.total) total_qty
 FROM orders o
@@ -250,7 +250,7 @@ ORDER BY total_sales DESC
 LIMIT 5;
 ````
 ##### Output:
-account_name | total_sales | total_qty 
+accout_name | total_sales | total_qty 
 ------------ | ------------  | ------------ 
 EOG Resources | 3062986.40 | 451280
 Mosaic | 2764948.72 | 393968 
@@ -259,11 +259,11 @@ General Dynamics | 2405558.32 | 349840
 Republic Services | 2350889.12 | 326664 
 
 
-#### Account Distribution by Region
+#### Customer Distribution by Region
 ````SQL
 SELECT 
     r.name AS region_name, 
-    COUNT(s.name) AS number_of_accounts 
+    COUNT(s.name) AS number_of_customers 
 FROM 
     accounts a
 LEFT JOIN sales_reps s
@@ -276,7 +276,7 @@ ORDER BY
     number_of_accounts DESC;
 ````
 ##### Output:
-region_name | number_of_accounts  
+region_name | number_of_customers  
 ------------ | ------------ 
 Northeast	| 54272
 West	| 51712
@@ -347,7 +347,7 @@ banner	| 384627232.40 | 63330392
 - The highest sales were recorded on December 26, 2016, with a total of $297,243.23. While the lowest sales were recorded on February 3, 2015, with a total of $486.55. This indicates that the company experienced peak sales activity during holiday season shopping or post-holiday promotions.
 - Earlie Schleusner leads in total sales and quantity sold, exhibiting a great ability to drive revenue and manage big volumes of orders. The remaining top sales representatives likewise demonstrate significant sales statistics, with a noticeable difference in both total sales and quantity.
 - EOG Resources leads in overall sales and amount purchased, showing that it is the most valuable customer. The remaining top customers have substantial sales and purchase volumes, emphasizing critical accounts that contribute significantly to overall revenue and order quantities.
-- The Northeast region has the highest number of accounts, Midwest has the fewest accounts indicating prospects for regional expansion or targeted sales efforts.
+- The Northeast region has the highest number of customers, Midwest has the fewest accounts indicating prospects for regional expansion or targeted sales efforts.
 - The Northeast region leads in total sales and quantity, indicating it is the highest revenue-generating region with a substantial number of orders. The Southeast region has the highest average sales per order, suggesting a stronger per-order performance. The Midwest has the lowest total sales and orders, which may indicate a need for increased focus or strategies to boost performance in that region.
 - The direct channel generates the highest sales and quantity, significantly outperforming other channels. This indicates that marketing through the direct channel is highly effective in driving revenue and underscores its importance in the overall sales strategy.
 
